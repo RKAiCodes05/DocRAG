@@ -2,9 +2,8 @@
 A Retrieval-Augmented Generation (RAG) system for intelligent question-answering over PDF documents using AI embeddings, semantic search, and large language models.
 
 --> Features
-*** Core Features***
 
-*Multi-PDF Support - Process multiple PDF documents
+* Multi-PDF Support - Process multiple PDF documents
 
 * Semantic Search - Find relevant sections using embeddings
 
