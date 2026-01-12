@@ -3,9 +3,10 @@ A Retrieval-Augmented Generation (RAG) system for intelligent question-answering
 
 --> Features
 *** Core Features***
+
 *Multi-PDF Support - Process multiple PDF documents
 
-*Semantic Search - Find relevant sections using embeddings
+* Semantic Search - Find relevant sections using embeddings
 
 * AI-Powered Answers - Generate contextual responses using Groq LLM
 
@@ -13,18 +14,7 @@ A Retrieval-Augmented Generation (RAG) system for intelligent question-answering
 
 * Chat History - Auto-save all conversations with metadata
 
-* Export Options - Download as JSON, CSV, or Markdown
-
---> UI/UX Features
-* Clean Minimalist Design - Professional, distraction-free interface
-
-* Two-Column Layout - Information sidebar + main content area
-
-* Responsive Design - Works on desktop, tablet, mobile
-
-* Tab-Based Interface - Answer, Sources, and Statistics views
-
-* Real-Time Metrics - Response time, confidence scores, source count
+* Export Options - Download as JSON, CSV, or Markdow
 
 
 --> Future Enhancements
