@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+streamlit
+python-dotenv
+pymupdf
+sentence-transformers
+pinecone
+groq
+pytest
+httpx
