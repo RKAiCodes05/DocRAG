@@ -34,3 +34,7 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           python -m pytest tests/ -v
+      
+      - name: Build Docker image
+        run: |
+          docker build -t rag-pdf-qa-service:${{ github.sha }} .
