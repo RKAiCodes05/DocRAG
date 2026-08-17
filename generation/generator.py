@@ -6,7 +6,7 @@ from groq import Groq
 class Generator:
     def __init__(
         self,
-        model: str = "llama-3.3-70b-versatile",
+        model: str = "qwen/qwen3.6-27b",
     ):
         api_key = os.getenv("GROQ_API_KEY")
 
