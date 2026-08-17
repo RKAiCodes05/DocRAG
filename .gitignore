@@ -34,3 +34,10 @@ data/pdf/*
 
 # Logs
 *.log
+
+# Evaluation outputs
+eval/results.json
+eval/negative_results.json
+
+# Local terminal output
+terminal_output.txt

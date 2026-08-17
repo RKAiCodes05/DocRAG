@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "question": "What is the capital of Mars?"
+  },
+  {
+    "id": 2,
+    "question": "Who won the FIFA World Cup in 2026?"
+  },
+  {
+    "id": 3,
+    "question": "What is the current stock price of NVIDIA?"
+  },
+  {
+    "id": 4,
+    "question": "What is the population of Japan in 2026?"
+  },
+  {
+    "id": 5,
+    "question": "Who is the current president of the United States?"
+  },
+  {
+    "id": 6,
+    "question": "What is the boiling point of liquid helium?"
+  },
+  {
+    "id": 7,
+    "question": "What is the GDP of India in 2026?"
+  },
+  {
+    "id": 8,
+    "question": "What is the distance between Earth and Proxima Centauri?"
+  },
+  {
+    "id": 9,
+    "question": "Who won the 2026 Formula 1 World Championship?"
+  },
+  {
+    "id": 10,
+    "question": "What is the latest version of the Android operating system?"
+  }
+]
