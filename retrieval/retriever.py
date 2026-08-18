@@ -7,8 +7,12 @@ class Retriever:
         self,
         top_k: int = 5,
         similarity_threshold: float = 0.70,
+        embedder: Embedder | None = None,
     ):
-        self.embedder = Embedder()
+        # Reuse an existing Embedder when provided.
+        # This prevents loading the embedding model multiple times.
+        self.embedder = embedder or Embedder()
+
         self.vector_store = PineconeVectorStore()
 
         self.top_k = top_k

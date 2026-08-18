@@ -8,3 +8,4 @@ pinecone
 groq
 pytest
 httpx
+python-multipart

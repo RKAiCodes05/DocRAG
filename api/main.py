@@ -1,11 +1,21 @@
 import logging
 import time
 import uuid
+import tempfile
+from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import (
+    FastAPI,
+    File,
+    HTTPException,
+    Request,
+    UploadFile,
+)
 from pydantic import BaseModel, Field
 
+from ingestion.service import DocumentIngestionService
 from rag.pipeline import RAGPipeline
+from retrieval.embedder import Embedder
 
 
 # ============================================================
@@ -62,6 +72,12 @@ A production-oriented RAG service that:
                 "Retrieval-Augmented Generation endpoints."
             ),
         },
+        {
+            "name": "documents",
+            "description": (
+                "PDF document ingestion and indexing endpoints."
+            ),
+        },
     ],
 )
 
@@ -70,9 +86,16 @@ A production-oriented RAG service that:
 # RAG Pipeline
 # ============================================================
 
+embedder = Embedder()
+
 pipeline = RAGPipeline(
     top_k=5,
     similarity_threshold=0.65,
+    embedder=embedder,
+)
+
+document_service = DocumentIngestionService(
+    embedder=embedder,
 )
 
 
@@ -223,6 +246,179 @@ def ready():
             detail="Service is not ready",
         )
 
+# ============================================================
+# Document Upload / Ingestion Endpoint / delete document endpoint
+# ============================================================
+@app.get(
+    "/documents",
+    tags=["documents"],
+)
+async def list_documents():
+    try:
+        return document_service.list_documents()
+
+    except Exception:
+        logger.exception(
+            "Failed to list documents"
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to list documents.",
+        )
+        
+@app.post(
+    "/documents",
+    tags=["documents"],
+    status_code=201,
+)
+async def upload_document(
+    file: UploadFile = File(...),
+):
+    if not file.filename:
+        raise HTTPException(
+            status_code=400,
+            detail="Filename is required.",
+        )
+
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only PDF files are supported.",
+        )
+
+    temp_path = None
+
+    try:
+        # --------------------------------------------------
+        # Create temporary PDF
+        # --------------------------------------------------
+
+        with tempfile.NamedTemporaryFile(
+            suffix=".pdf",
+            delete=False,
+        ) as temp_file:
+
+            temp_path = Path(
+                temp_file.name
+            )
+
+            total_size = 0
+
+            while True:
+                chunk = await file.read(
+                    1024 * 1024
+                )
+
+                if not chunk:
+                    break
+
+                total_size += len(chunk)
+
+                # 25 MB upload limit
+                if total_size > 25 * 1024 * 1024:
+                    raise HTTPException(
+                        status_code=413,
+                        detail=(
+                            "PDF file is too large. "
+                            "Maximum size is 25 MB."
+                        ),
+                    )
+
+                temp_file.write(chunk)
+
+        # --------------------------------------------------
+        # Ingest document
+        # --------------------------------------------------
+
+        result = document_service.ingest(
+            temp_path,
+            file.filename,
+        )
+
+        # --------------------------------------------------
+        # Duplicate document
+        # --------------------------------------------------
+
+        if result["status"] == "already_exists":
+            raise HTTPException(
+                status_code=409,
+                detail=(
+                    f"Document '{file.filename}' "
+                    "is already indexed."
+                ),
+            )
+
+        result["document"] = file.filename
+
+        logger.info(
+            "Document indexed: "
+            "name=%s chunks=%s hash=%s",
+            file.filename,
+            result["chunks"],
+            result["document_hash"][:16],
+        )
+
+        return result
+
+    except HTTPException:
+        raise
+
+    except ValueError as exc:
+        logger.warning(
+            "Document ingestion validation failed: %s",
+            exc,
+        )
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        )
+
+    except Exception:
+        logger.exception(
+            "Unexpected error during document ingestion"
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Document ingestion failed.",
+        )
+
+    finally:
+        # --------------------------------------------------
+        # Always delete temporary PDF
+        # --------------------------------------------------
+
+        if (
+            temp_path is not None
+            and temp_path.exists()
+        ):
+            temp_path.unlink()
+
+@app.delete(
+    "/documents/{document_hash}",
+    tags=["documents"],
+)
+async def delete_document(
+    document_hash: str,
+):
+    try:
+        result = document_service.delete(
+            document_hash
+        )
+
+        return result
+
+    except Exception:
+        logger.exception(
+            "Document deletion failed"
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Document deletion failed.",
+        )
 
 # ============================================================
 # RAG Query Endpoint

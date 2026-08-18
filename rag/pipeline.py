@@ -2,6 +2,7 @@ import time
 
 from generation.generator import Generator
 from retrieval.retriever import Retriever
+from retrieval.embedder import Embedder
 
 
 class RAGPipeline:
@@ -26,13 +27,16 @@ class RAGPipeline:
         self,
         top_k: int = 5,
         similarity_threshold: float = 0.65,
+        embedder: Embedder | None = None,
     ):
         self.top_k = top_k
         self.similarity_threshold = similarity_threshold
+        self.embedder = embedder or Embedder()
 
         self.retriever = Retriever(
             top_k=top_k,
             similarity_threshold=similarity_threshold,
+            embedder=self.embedder,
         )
 
         self.generator = Generator()

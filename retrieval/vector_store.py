@@ -112,6 +112,66 @@ class PineconeVectorStore:
             }
         )
 
+    def list_documents(self) -> list[dict]:
+        """
+        Return all unique documents currently
+        indexed in Pinecone.
+        """
+
+        documents = {}
+
+        # Get all vector IDs from the index.
+        vector_ids = []
+
+        for page in self.index.list():
+            for item in page.vectors:
+                vector_ids.append(item.id)
+            
+
+        # Fetch metadata in batches.
+        batch_size = 100
+
+        for start in range(
+            0,
+            len(vector_ids),
+            batch_size,
+        ):
+            batch_ids = vector_ids[
+                start:start + batch_size
+            ]
+
+            result = self.index.fetch(
+                ids=batch_ids
+            )
+
+            for vector in result.vectors.values():
+
+                metadata = vector.metadata or {}
+
+                document_hash = metadata.get(
+                    "document_hash"
+                )
+
+                document_name = metadata.get(
+                    "document_name"
+                )
+
+                if not document_hash:
+                    continue
+
+                if document_hash not in documents:
+                    documents[document_hash] = {
+                        "document": document_name,
+                        "document_hash": document_hash,
+                        "chunks": 0,
+                    }
+
+                documents[
+                    document_hash
+                ]["chunks"] += 1
+
+        return list(documents.values())
+
     def search(
         self,
         query_vector,
