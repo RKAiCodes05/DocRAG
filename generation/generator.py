@@ -101,6 +101,7 @@ Include source citations such as [Source 1].
                 },
             ],
             temperature=0,
+            reasoning_effort="none",
         )
 
         answer = response.choices[0].message.content
