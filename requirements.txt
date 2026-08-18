@@ -1,6 +1,5 @@
 fastapi
 uvicorn[standard]
-streamlit
 python-dotenv
 pymupdf
 sentence-transformers
