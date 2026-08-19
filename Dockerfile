@@ -37,7 +37,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # ============================================================
 
 COPY api ./api
-COPY eval ./eval
 COPY generation ./generation
 COPY ingestion ./ingestion
 COPY retrieval ./retrieval
