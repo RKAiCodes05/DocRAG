@@ -149,8 +149,8 @@ Detailed technical documentation is available in `docs/`:
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/RKAiCodes05/rag-pdf-qa-service.git
-cd rag-pdf-qa-service
+git clone https://github.com/RKAiCodes05/DocRAG.git
+cd DocRAG
 
 python -m venv .venv
 source .venv/bin/activate
