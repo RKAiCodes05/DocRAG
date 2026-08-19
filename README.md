@@ -1,4 +1,4 @@
-# RAG PDF QA Service
+# DocRAG
 
 > A production-oriented Retrieval-Augmented Generation (RAG) API for question answering over PDF documents.
 
