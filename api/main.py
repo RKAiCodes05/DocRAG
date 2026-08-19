@@ -38,7 +38,7 @@ logger = logging.getLogger("rag-api")
 # ============================================================
 
 app = FastAPI(
-    title="RAG PDF QA Service",
+    title="DocRAG: Document Retrieval-Augmented Generation Service",
     description="""
 ## Retrieval-Augmented Generation API
 
@@ -191,7 +191,7 @@ async def request_logging_middleware(
 )
 def root():
     return {
-        "service": "RAG PDF QA Service",
+        "service": "DocRAG",
         "status": "running",
         "version": "1.0.0",
     }

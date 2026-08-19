@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="RAG PDF QA Service",
+    title="DocRAG: Document Retrieval-Augmented Generation Service",
     version="0.1.0",
 )
 

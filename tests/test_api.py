@@ -17,7 +17,7 @@ def test_root():
 
     data = response.json()
 
-    assert data["service"] == "RAG PDF QA Service"
+    assert data["service"] == "DocRAG"
     assert data["status"] == "running"
 
 

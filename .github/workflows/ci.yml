@@ -1,4 +1,4 @@
-name: RAG PDF QA CI
+name: DocRAG CI
 
 on:
   push:
