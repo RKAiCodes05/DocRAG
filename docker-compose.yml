@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    image: rag-pdf-qa-service:1.0
+    image: docrag:1.0
 
     container_name: rag-pdf-qa-container
 
