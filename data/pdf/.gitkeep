@@ -1,0 +1,3 @@
+# Local PDF files
+data/pdf/*
+!data/pdf/.gitkeep

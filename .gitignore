@@ -1,15 +1,25 @@
 # Python
 __pycache__/
 *.py[cod]
-*.so
 
 # Virtual environments
 .venv/
 venv/
 env/
 
-# Environment variables
+# Environment / secrets
 .env
+.env.*
+!.env.example
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking / linting
+.mypy_cache/
+.ruff_cache/
 
 # IDE
 .vscode/
@@ -19,25 +29,17 @@ env/
 .DS_Store
 Thumbs.db
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Local data
-data/pdf/*
-
-# Model/cache files
-.cache/
-*.bin
-*.safetensors
-
 # Logs
 *.log
 
-# Evaluation outputs
-eval/results.json
-eval/negative_results.json
+# Terminal output
+terminal_output*.txt
 
-# Local terminal output
-terminal_output.txt
+# Local data
+data/pdf/*.pdf
+
+# Generated evaluation results
+evaluation/results/
+
+# Local model/cache directories
+.cache/
