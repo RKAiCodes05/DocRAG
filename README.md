@@ -38,12 +38,50 @@ It also supports document hashing, duplicate detection, document listing, and do
 - 🤖 Groq LLM generation
 - 📚 Source-aware responses
 - 📋 Document management APIs
-- 📊 Retrieval and generation latency tracking
+- 📊 Retrieval quality and latency evaluation
 - 🐳 Dockerized application
 - 🔄 GitHub Actions CI/CD
 - 📦 GitHub Container Registry
 - ☁️ Azure production deployment
 - 🔒 Caddy reverse proxy with HTTPS
+
+
+## 📊 Evaluation & Performance
+
+### Retrieval Quality
+
+Evaluated on **20 manually labeled questions** using `BAAI/bge-base-en-v1.5`, Pinecone cosine similarity, `top_k=5`, and a similarity threshold of `0.65`.
+
+| Metric | Result |
+| :--- | ---: |
+| Hit@1 | **50%** |
+| Hit@3 | **90%** |
+| Hit@5 | **95%** |
+
+The evaluation achieved **19/20 successful Hit@5 queries**. Per-question results and retrieval failures are recorded by the evaluation harness for debugging.
+
+### Out-of-Domain Rejection
+
+Evaluated on **10 negative questions** unrelated to the indexed documents.
+
+| Metric | Result |
+| :--- | ---: |
+| Correct Rejections | **10/10** |
+| Rejection Rate | **100%** |
+
+### Retrieval Latency
+
+Measured across the 20-question retrieval evaluation set:
+
+| Metric | Latency |
+| :--- | ---: |
+| P50 | **1636.31 ms** |
+| P95 | **1643.98 ms** |
+| Mean | **1646.13 ms** |
+| Min | **1249.90 ms** |
+| Max | **3230.71 ms** |
+
+> These P50/P95 figures measure the retrieval operation itself, not full end-to-end API latency including network transfer and LLM generation.
 
 ## 🏗️ Architecture
 ```text
@@ -145,6 +183,7 @@ Detailed technical documentation is available in `docs/`:
 - API Reference
 - Deployment
 - Development
+- Evaluation
 
 ## 🚀 Quick Start
 
